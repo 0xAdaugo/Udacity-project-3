@@ -3,45 +3,63 @@ kind: Deployment
 metadata:
   name: backend-user
   labels:
-    run: backend-user
+    app: backend-user
 spec:
-  replicas: 2
   selector:
     matchLabels:
-      run: backend-user
+      app: backend-user
+  replicas: 1
   template:
     metadata:
       labels:
-        run: backend-user
+        app: backend-user
     spec:
+      restartPolicy: Always
       containers:
-      - name: backend-user
-        image: adaugo/udagram-api-user:v2
-        ports:
-        - containerPort: 80
-        resources:
-          limits:
-            cpu: 500m
-          requests:
-            cpu: 200m
-        envFrom:
-          - configMapRef:
-              name: env-config
-          - secretRef:
-             name: env-secret
-
+        - name: backend-user
+          imagePullPolicy: Always
+          image: adaugo/udagram-api-user:v2
+          ports:
+            - containerPort: 8080
+          env:
+            - name: POSTGRES_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: udagram-secret
+                  key: POSTGRES_USERNAME
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: udagram-secret
+                  key: POSTGRES_PASSWORD
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: udagram-secret
+                  key: POSTGRES_DB
+            - name: POSTGRES_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: udagram-secret
+                  key: POSTGRES_HOST
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: udagram-secret
+                  key: JWT_SECRET
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  labels:
-    service: backend-user
   name: backend-user
+  labels:
+    app: backend-user
 spec:
+  type: ClusterIP
   ports:
-  - name: "8080"
-    port: 8080
-    targetPort: 8080
+    - port: 8080
+      targetPort: 8080
+      protocol: TCP
   selector:
-    service: backend-user
+    app: backend-user

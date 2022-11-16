@@ -2,26 +2,30 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: frontend
+  labels:
+    app: frontend
 spec:
   selector:
     matchLabels:
-      run: frontend
+      app: frontend
   replicas: 2
   template:
     metadata:
       labels:
-        run: frontend
+        app: frontend
     spec:
+      restartPolicy: Always
       containers:
-      - name: frontend
-        image: adaugo/udagram-frontend:v2
-        ports:
-        - containerPort: 80
-        resources:
-          limits:
-            cpu: 500m
-          requests:
-            cpu: 200m
+        - name: frontend
+          imagePullPolicy: Always
+          image: adaugo/udagram-frontend:v2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: 512m
+            requests:
+              cpu: 256m
 
 ---
 apiVersion: v1
@@ -29,10 +33,26 @@ kind: Service
 metadata:
   name: frontend
   labels:
-    run: frontend
+    app: frontend
 spec:
+  type: LoadBalancer
   ports:
-  - port: 80
-    protocol: TCP
+    - port: 80
+      targetPort: 80
+      protocol: TCP
   selector:
-    run: frontend
+    app: frontend
+
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: hpa-frontend
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: frontend
+  minReplicas: 2
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 70
