@@ -18,7 +18,7 @@ spec:
       containers:
         - name: backend-feed
           imagePullPolicy: Always
-          image: adaugo/udagram-api-feed:v2
+          image: adaugo/udagram-api-feed:v3
           ports:
             - containerPort: 8080
           env:

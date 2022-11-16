@@ -18,7 +18,7 @@ spec:
       containers:
         - name: backend-user
           imagePullPolicy: Always
-          image: adaugo/udagram-api-user:v2
+          image: adaugo/udagram-api-user:v3
           ports:
             - containerPort: 8080
           env:

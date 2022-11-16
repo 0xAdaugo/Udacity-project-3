@@ -15,8 +15,8 @@ jobs:
       - name: Build & Push Reverse Proxy Image to DockerHub
         run: |
           echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-          docker build -t adaugo/reverseproxy:v2 ./udagram-reverseproxy
-          docker push adaugo/reverseproxy:v2
+          docker build -t adaugo/reverseproxy:v3 ./udagram-reverseproxy
+          docker push adaugo/reverseproxy:v3
   second_job:
     runs-on: ubuntu-latest
 
@@ -25,8 +25,8 @@ jobs:
       - name: Build & Push Backend User Service Image to DockerHub
         run: |
           echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-          docker build -t adaugo/udagram-api-user:v2 ./udagram-api-user
-          docker push adaugo/udagram-api-user:v2
+          docker build -t adaugo/udagram-api-user:v3 ./udagram-api-user
+          docker push adaugo/udagram-api-user:v3
   third_job:
     runs-on: ubuntu-latest
 
@@ -35,8 +35,8 @@ jobs:
       - name: Build & Push Backend Feed Service Image to DockerHub
         run: |
           echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-          docker build -t adaugo/udagram-api-feed:v2 ./udagram-api-feed
-          docker push adaugo/udagram-api-feed:v2
+          docker build -t adaugo/udagram-api-feed:v3 ./udagram-api-feed
+          docker push adaugo/udagram-api-feed:v3
   forth_job:
     runs-on: ubuntu-latest
 
@@ -45,5 +45,5 @@ jobs:
       - name: Build & Push Frontend Image to DockerHub
         run: |
           echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-          docker build -t adaugo/udagram-frontend:v2 ./udagram-frontend
-          docker push adaugo/udagram-frontend:v2
+          docker build -t adaugo/udagram-frontend:v3 ./udagram-frontend
+          docker push adaugo/udagram-frontend:v3
