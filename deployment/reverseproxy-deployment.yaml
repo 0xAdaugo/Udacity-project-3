@@ -2,37 +2,38 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: reverseproxy
-  labels:
-    app: reverseproxy
 spec:
   selector:
     matchLabels:
-      app: reverseproxy
-  replicas: 1
+      run: reverseproxy
+  replicas: 2
   template:
     metadata:
       labels:
-        app: reverseproxy
+        run: reverseproxy
     spec:
-      restartPolicy: Always
       containers:
-        - name: reverseproxy
-          imagePullPolicy: Always
-          image: adaugo/reverseproxy:v2
-          ports:
-            - containerPort: 8080
+      - name: reverseproxy
+        image: adaugo/reverseproxy:v3
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            cpu: 500m
+          requests:
+            cpu: 200m
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: reverseproxy
   labels:
-    app: reverseproxy
+    service: reverseproxy
+  name: reverseproxy
 spec:
-  type: LoadBalancer
   ports:
-    - port: 8080
-      targetPort: 8080
+  - name: "8080"
+    port: 8080
+    targetPort: 8080
   selector:
-    app: reverseproxy
+    service: reverseproxy
