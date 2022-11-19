@@ -3,9 +3,9 @@ kind: ConfigMap
 metadata:
   name: env-config
 data:
-  POSTGRES_USER_NAME: adaugochukwu
-  POSTGRES_PASSWORD: Nzubechukwu$.
-  POSTGRES_HOST: database-1.cqwgcc7178sr.us-east-1.rds.amazonaws.com
+  POSTGRES_USER_NAME: cG9zdGdyZXM=
+  POSTGRES_PASSWORD: Tnp1YmVjaHVrd3UkLg==
+  POSTGRES_HOST: database-1.cnvak4vszual.us-east-1.rds.amazonaws.com
   POSTGRES_DB: postgres
   AWS_BUCKET: adaugo-aws-bucket
   AWS_REGION: us-east-1
